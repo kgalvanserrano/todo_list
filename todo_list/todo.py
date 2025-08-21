@@ -1,13 +1,3 @@
-# read lines -> put them in a list
-# show numbered tasks -> ask the user which number to delete
-# use list deletion (pop/del)
-# rewrite the file with the updated list
-
-# open the stupid tasks file
-f = open("todo_list/tasks.txt", "r+")
-
-# main
-# run app
 def main():
     print("" \
     "Welcome to Kevin's Todo List App\n" \
@@ -29,31 +19,46 @@ def main():
             delTask()
         elif choice == '5':
             print("Exiting the app. Goodbye!")
-            f.close()
             break
         else:
             print("Invalid choice, please try again.")
 
 # adds a task
 def addTask():
-    taskDescription = input("Enter the task description: ")
-    f.write(taskDescription + '\n')
-    print("Task added!")
-    
+    f = open("todo_list/tasks.txt", "a")
+    if f == " ":
+        print("No tasks found.")
+    else:
+        taskDescription = input("Enter the task description: ")
+        f.write(taskDescription + '\n')
+        print("Task added!")
+
 # deletes a task
 def delTask():
-    tasks = f.readlines()
-    f.seek(0)
+    f = open("todo_list/tasks.txt", "r")
+    tasks = f.readlines() # read file into a list
+    for i, task in enumerate(tasks, start=1): # show numbered tasks
+        print(f"{i}. {task.strip()}")
+    delete = int(input("Enter the number of the task to delete: "))
+    try:
+        if 1 <= delete <= len(tasks):
+            tasks.pop(delete - 1) # we have to subtract by 1 since we're starting the enumeration with 1
+            f = open("todo_list/tasks.txt", "w")
+            f.writelines(tasks)
+            f.close()
+    except:
+        print("Invalid task number.")
 
 # view the tasks
 def viewTasks():
+    f = open("todo_list/tasks.txt", "r")
     f.seek(0)  # move to the beginning of the file
-    print(f.read())  # read and print the list
+    for i, task in enumerate(f, start=1):
+        print(f"{i}. {task.strip()}")  # read and print the list
 
 # clear the tasks
 def clearTasks():
-    f.seek(0)  # move to the beginning of the file
-    f.truncate(0)
+    f = open("todo_list/tasks.txt", "w")
 
 
 if __name__ == "__main__":
