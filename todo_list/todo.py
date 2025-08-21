@@ -26,12 +26,9 @@ def main():
 # adds a task
 def addTask():
     f = open("todo_list/tasks.txt", "a")
-    if f == " ":
-        print("No tasks found.")
-    else:
-        taskDescription = input("Enter the task description: ")
-        f.write(taskDescription + '\n')
-        print("Task added!")
+    taskDescription = input("Enter the task description: ")
+    f.write(taskDescription + '\n')
+    print("Task added!")
 
 # deletes a task
 def delTask():
